@@ -23,7 +23,7 @@ Route::get('/about', function () {
 Route::get('/users', function () {
     $users = User::query()
         ->select(['id', 'name', 'email', 'created_at', 'updated_at'])
-        ->paginate();
+        ->paginate(20);
 
     return $users;
 });
