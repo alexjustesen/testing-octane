@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Hash;
 
 class InstallCommand extends Command
 {
@@ -14,7 +13,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:install {--force}';
+    protected $signature = 'app:install {users?} {--force}';
 
     /**
      * The console command description.
@@ -89,16 +88,13 @@ class InstallCommand extends Command
 
         $this->newLine();
 
-        $this->line('⏳ Adding the test user...');
+        $this->line('⏳ Adding the users...');
 
-        User::create([
-            'name' => 'John Test',
-            'email' => 'john@example.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-        ]);
+        User::factory()
+            ->count($this->argument('users') ?? 5)
+            ->create();
 
-        $this->line('✅ User added');
+        $this->line('✅ Users added');
 
         $this->newLine();
 
